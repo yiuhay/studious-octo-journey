@@ -73,7 +73,7 @@ az storage container create --name $TF_STATE_CONTAINER_NAME \
 
 # Store the Terraform State Storage Key into KeyVault
 echo "Store storage access key into key vault secret..."
-az keyvault secret set --name angdevst-key --value $ACCOUNT_KEY --vault-name $KV_NAME
+az keyvault secret set --name ARM_ACCESS_KEY --value $ACCOUNT_KEY --vault-name $KV_NAME
 
 echo "Key vault secret created."
 
@@ -124,3 +124,4 @@ echo '"export ARM_CLIENT_ID=$(az keyvault secret show --name ARM-CLIENT-ID --vau
 echo '"export ARM_CLIENT_SECRET=$(az keyvault secret show --name ARM-CLIENT-SECRET --vault-name '$KV_NAME' --query value -o tsv)"'
 echo '"export ARM_SUBSCRIPTION_ID=$(az keyvault secret show --name ARM-SUBSCRIPTION-ID --vault-name '$KV_NAME' --query value -o tsv)"'
 echo '"export ARM_TENANT_ID=$(az keyvault secret show --name ARM-TENANT-ID --vault-name '$KV_NAME' --query value -o tsv)"'
+echo '"export ARM_ACCESS_KEY=$(az keyvault secret show --name ARM_ACCESS_KEY --vault-name '$KV_NAME' --query value -o tsv)"'
