@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Azure Project Bootstrap
+# Script can only be run with AZ Cli installed with at least contributer rights to Subscription
+# Creates 2 Resource Groups: 1 for infrastructure and 1 for secrets
+# Key Vault is in the secrets RG
+# Storage Account is in the secrets RG
+# Service Principal created will have contributer rights to Resource Group for infrastructure
+# Service Principal can get, list and set secrets from Key Vault
+# Service Principal can write to container
+
 set -e
 
 SUBSCRIPTION=
