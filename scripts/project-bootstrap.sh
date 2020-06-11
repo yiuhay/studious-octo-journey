@@ -96,7 +96,7 @@ az keyvault secret set --name "ARM-CLIENT-SECRET" --value "$SP_SECRET" --vault-n
 SP_OBJ_ID=$(az ad sp list --display-name $SERVICEPRINCIPAL_NAME --query "[].{id:objectId}" -o tsv)
 
 echo "Give $SERVICEPRINCIPAL_NAME access to $KV_NAME Key Vault..."
-az keyvault set-policy --name $KV_NAME --object-id "$SP_OBJ_ID" --secret-permissions get list set
+az keyvault set-policy --name $KV_NAME --object-id "$SP_OBJ_ID" --secret-permissions get list
 
 echo "KV access applied"
 
