@@ -5,8 +5,14 @@
 # Creates 2 Resource Groups: 1 for infrastructure and 1 for secrets
 # Key Vault is in the secrets RG
 # Storage Account is in the secrets RG
+# Will store the following in Key Vault so they can be sourced:
+# - Subscription ID
+# - Tenant ID
+# - Storage Account Key
+# - Service Principal appID
+# - Service Principal Secret
 # Service Principal created will have contributer rights to Resource Group for infrastructure
-# Service Principal can get, list and set secrets from Key Vault
+# Service Principal can get and list secrets from Key Vault
 # Service Principal can write to container
 
 set -e
