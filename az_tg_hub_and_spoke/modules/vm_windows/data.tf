@@ -10,8 +10,8 @@ data "azurerm_subnet" "snet_vm" {
 }
 
 data "azurerm_key_vault" "kv" {
-  name                = "${var.resource_prefix}-kv"
-  resource_group_name = "${var.resource_prefix}-secret-rg"
+  name                = "${var.rg_prefix}-kv"
+  resource_group_name = "${var.rg_prefix}-secret-rg"
 }
 
 data "azurerm_key_vault_secret" "winadmin" {
