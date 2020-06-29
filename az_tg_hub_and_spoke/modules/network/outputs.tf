@@ -13,3 +13,8 @@ output "vnet_name" {
 output "vnet_location" {
   value = azurerm_virtual_network.vnet.location
 }
+
+output "snet_id" {
+  description = "The ids of subnets created"
+  value       = azurerm_subnet.subnet.*.id
+}

@@ -8,11 +8,6 @@ variable "vnet_prefix" {
     type        = string
 }
 
-
-variable "cidr_vgw" {
-  description = "The address space that is used by the GatewaySubnet."  
-}
-
 variable "onprem_public" {
   description = "Key Vault stored public address of the on premise target"
 }

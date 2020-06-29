@@ -8,13 +8,6 @@ module "labels" {
   }
 }
 
-resource "azurerm_subnet" "snet_vgw" {
-  name                 = "GatewaySubnet"
-  resource_group_name  = "${var.rg_prefix}-rg"
-  virtual_network_name = var.vnet_prefix
-  address_prefix       = var.cidr_vgw
-}
-
 resource "azurerm_public_ip" "pip_vgw" {
   name                 = "${var.vnet_prefix}-pip-vgw"
   location             = data.azurerm_virtual_network.vnet.location
@@ -38,7 +31,7 @@ resource "azurerm_virtual_network_gateway" "vgw" {
   sku                  = "VpnGw1"
 
   ip_configuration {
-    subnet_id            = azurerm_subnet.snet_vgw.id
+    subnet_id            = data.azurerm_subnet.snet_vgw.id
     public_ip_address_id = azurerm_public_ip.pip_vgw.id
   }
 

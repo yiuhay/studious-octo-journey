@@ -15,14 +15,13 @@ locals {
 }
 
 dependencies {
-  paths = ["../vnet"]
+  paths = ["../network"]
 }
 
 inputs = {
   rg_prefix        = local.global.rg_prefix
   vnet_prefix      = "hub-${local.global.env}"
-
-  cidr_vgw         = "10.69.0.0/24"
+  
   onprem_public    = "ONPREM-IP"
   onprem_private   = ["192.168.7.0/24", "192.168.11.0/24"]
 
