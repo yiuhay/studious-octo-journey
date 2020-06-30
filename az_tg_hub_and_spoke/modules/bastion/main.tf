@@ -9,7 +9,7 @@ module "labels" {
 }
 
 resource "azurerm_public_ip" "pip_bastion" {
-  name                = "${var.resource_prefix}-pip-bastion"
+  name                = "${var.vnet_prefix}-pip-bastion"
   location            = data.azurerm_virtual_network.vnet.location
   resource_group_name = "${var.rg_prefix}-rg"
   allocation_method   = "Static"
@@ -19,7 +19,7 @@ resource "azurerm_public_ip" "pip_bastion" {
 }
 
 resource "azurerm_bastion_host" "bastion" {
-  name                 = "${var.resource_prefix}-bastion"
+  name                 = "${var.vnet_prefix}-bastion"
   location             = data.azurerm_virtual_network.vnet.location
   resource_group_name  = "${var.rg_prefix}-rg"
 
@@ -32,17 +32,13 @@ resource "azurerm_bastion_host" "bastion" {
   tags = module.labels.tags
 }
 
+# Bastion NSG
 resource "azurerm_network_security_group" "nsg_bastion" {
   name                 = "nsg-bastion"
   location             = data.azurerm_virtual_network.vnet.location
   resource_group_name  = "${var.rg_prefix}-rg"
 
   tags = module.labels.tags
-}
-
-resource "azurerm_subnet_network_security_group_association" "snet_bastion_assoc" {
-  subnet_id                 = data.azurerm_subnet.snet_bastion.id
-  network_security_group_id = azurerm_network_security_group.nsg_bastion.id
 }
 
 resource "azurerm_network_security_rule" "ingress_bastion_any" {
@@ -115,4 +111,53 @@ resource "azurerm_network_security_rule" "egress_bastion_ssh" {
   destination_address_prefix  = "VirtualNetwork"
   resource_group_name         = "${var.rg_prefix}-rg"
   network_security_group_name = azurerm_network_security_group.nsg_bastion.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "snet_bastion_assoc" {
+  subnet_id                 = data.azurerm_subnet.snet_bastion.id
+  network_security_group_id = azurerm_network_security_group.nsg_bastion.id
+
+  depends_on = [azurerm_bastion_host.bastion, azurerm_network_security_group.nsg_bastion]
+}
+
+# Internal NSG
+resource "azurerm_network_security_group" "nsg_internal" {
+  name                = "nsg-internal"
+  location             = data.azurerm_virtual_network.vnet.location
+  resource_group_name  = "${var.rg_prefix}-rg"
+
+  tags = module.labels.tags
+}
+
+resource "azurerm_network_security_rule" "ingress_internal_ssh" {
+  name                        = "InboundFromSSH"
+  priority                    = 100
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "22"
+  source_address_prefixes     = data.azurerm_subnet.snet_bastion.address_prefixes
+  destination_address_prefix  = "*"
+  resource_group_name         = "${var.rg_prefix}-rg"
+  network_security_group_name = azurerm_network_security_group.nsg_internal.name
+}
+
+resource "azurerm_network_security_rule" "ingress_internal_rdp" {
+  name                        = "InboundFromRDP"
+  priority                    = 120
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "3389"
+  source_address_prefixes     = data.azurerm_subnet.snet_bastion.address_prefixes
+  destination_address_prefix  = "*"
+  resource_group_name         = "${var.rg_prefix}-rg"
+  network_security_group_name = azurerm_network_security_group.nsg_internal.name
+}
+
+resource "azurerm_subnet_network_security_group_association" "snet_internal_assoc" {
+  subnet_id                 = data.azurerm_subnet.snet_internal.id
+  network_security_group_id = azurerm_network_security_group.nsg_internal.id
 }

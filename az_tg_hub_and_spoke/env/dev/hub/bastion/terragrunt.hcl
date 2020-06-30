@@ -19,12 +19,14 @@ dependencies {
 }
 
 inputs = {
-  rg_prefix    = local.global.rg_prefix
-  location     = local.global.location
+  rg_prefix     = local.global.rg_prefix
+  location      = local.global.location
 
-  vnet_prefix  = "hub-${local.global.env}"
+  vnet_prefix   = "hub-${local.global.env}"
 
-  env          = local.global.env
-  project      = local.global.project
-  owner        = local.global.owner
+  snet_internal = "server"
+
+  env           = local.global.env
+  project       = local.global.project
+  owner         = local.global.owner
 }

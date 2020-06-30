@@ -8,6 +8,11 @@ variable "vnet_prefix" {
     type        = string
 }
 
+variable "snet_internal" {
+    description = "Internal subnet the bastion can connect to"
+    type        = string
+}
+
 variable "env" {}
 
 variable "project" {}
