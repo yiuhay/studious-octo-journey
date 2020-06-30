@@ -10,7 +10,7 @@ variable "vnet_prefix" {
 
 variable "snet_name" {
   description = "Subnet name to place VM"
-  type        = "string"
+  type        = string
 }
 
 variable "vm_prefix" {
