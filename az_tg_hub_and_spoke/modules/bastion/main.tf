@@ -34,7 +34,7 @@ resource "azurerm_bastion_host" "bastion" {
 
 # Bastion NSG
 resource "azurerm_network_security_group" "nsg_bastion" {
-  name                 = "nsg-bastion"
+  name                 = "${var.vnet_prefix}-nsg-bastion"
   location             = data.azurerm_virtual_network.vnet.location
   resource_group_name  = "${var.rg_prefix}-rg"
 
@@ -122,7 +122,7 @@ resource "azurerm_subnet_network_security_group_association" "snet_bastion_assoc
 
 # Internal NSG
 resource "azurerm_network_security_group" "nsg_internal" {
-  name                = "nsg-internal"
+  name                = "${var.vnet_prefix}-nsg-internal"
   location             = data.azurerm_virtual_network.vnet.location
   resource_group_name  = "${var.rg_prefix}-rg"
 

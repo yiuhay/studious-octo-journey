@@ -24,6 +24,8 @@ inputs = {
 
   vnet_prefix  = "spoke-veeam-${local.global.env}"
 
+  snet_internal = "server"
+
   env          = local.global.env
   project      = local.global.project
   owner        = local.global.owner
