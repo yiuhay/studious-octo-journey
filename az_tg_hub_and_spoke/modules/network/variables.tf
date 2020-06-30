@@ -9,8 +9,8 @@ variable "location" {
 }
 
 variable "vnet_prefix" {
-    description = "Virtual Network prefix."
-    type        = string
+  description = "Virtual Network prefix."
+  type        = string
 }
 
 variable "cidr_vnet" {
@@ -19,11 +19,13 @@ variable "cidr_vnet" {
 
 variable "snet_prefixes" {
   description = "The address prefix to use for the subnet."
+  type        = list
   default     = ["10.0.1.0/24"]
 }
 
 variable "snet_names" {
   description = "A list of public subnets inside the vNet."
+  type        = list
   default     = ["subnet1"]
 }
 
